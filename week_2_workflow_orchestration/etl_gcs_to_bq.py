@@ -27,27 +27,33 @@ def transform(path: Path) -> pd.DataFrame:
 
 
 @task()
-def write_bq(df: pd.DataFrame) -> None:
+def write_bq(df: pd.DataFrame, color, if_exists) -> None:
     """Write DataFrame to BiqQuery"""
 
     gcp_credentials_block = GcpCredentials.load("zoom-gcp-creds")
 
+    if color == 'yellow':
+        destination_table = 'dezoomcamp.rides'
+    
+    if color == 'green':
+        destination_table = 'dezoomcamp.rides_green'
+    
     df.to_gbq(
-        destination_table="dezoomcamp.rides",
+        destination_table="dezoomcamp.rides_green",
         project_id="ny-rides-lbamagalhaes",
         credentials=gcp_credentials_block.get_credentials_from_service_account(),
         chunksize=500_000,
-        if_exists="append",
+        if_exists=if_exists,
     )
 
 
 @flow()
-def etl_gcs_to_bq(months: list = [2,3], color: str = 'yellow', year: str = '2019'):
+def etl_gcs_to_bq(months: list = [2,3], color: str = 'yellow', year: str = '2019', if_exists: str = 'append'):
     """Main ETL flow to load data into Big Query"""
     for month in months:
         path = extract_from_gcs(color, year, month)
         df = transform(path)
-        write_bq(df)
+        write_bq(df, color, if_exists)
 
 
 if __name__ == "__main__":

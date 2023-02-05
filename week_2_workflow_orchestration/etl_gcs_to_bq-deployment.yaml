@@ -7,7 +7,7 @@ version: 51bc38a78e72d85bd47cfb775ccfed64
 # The work queue that will handle this deployment's runs
 work_queue_name: default
 tags: []
-parameters: {"months": [2,3], "color":"yellow", "year": 2019}
+parameters: {"months": [2,3], "color":"yellow", "year": 2019, "if_exists":  "append"}
 schedule: null
 infra_overrides: {}
 infrastructure:
@@ -50,6 +50,11 @@ parameter_openapi_schema:
       title: year
       default: '2019'
       position: 2
+      type: string
+    if_exists:
+      title: if_exists
+      default: 'append'
+      position: 3
       type: string
   required: null
   definitions: null
