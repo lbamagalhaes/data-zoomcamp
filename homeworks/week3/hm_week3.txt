@@ -1,7 +1,10 @@
 QUESTION 1
 
-SELECT COUNT(*) FROM `ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata`
-WHERE DATE(dropOff_datetime) >= "2019-01-01" AND DATE(dropOff_datetime) <="2019-12-31"
+CREATE OR REPLACE EXTERNAL TABLE `ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata_csv`
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://prefect-de-zoomcaamp/data/yellow/fhv_tripdata_2019-*.csv.gz']
+);
 
 QUESTION 2
 
