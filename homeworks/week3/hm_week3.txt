@@ -6,6 +6,9 @@ OPTIONS (
   uris = ['gs://prefect-de-zoomcaamp/data/yellow/fhv_tripdata_2019-*.csv.gz']
 );
 
+
+SELECT COUNT(*) FROM `ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata_csv`
+
 QUESTION 2
 
 SELECT count(DISTINCT(Affiliated_base_number))
@@ -22,10 +25,15 @@ QUESTION 4
 
 QUESTION 5
 
+SELECT count(DISTINCT(Affiliated_base_number))
+FROM `ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata`
+WHERE DATE(pickup_datetime) BETWEEN "2019-01-03" AND "2019-03-31";
+
 CREATE OR REPLACE TABLE `ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata_partitioned_clustered`
 PARTITION BY DATE(pickup_datetime)
 CLUSTER BY Affiliated_base_number AS
-SELECT * FROM ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata;
+SELECT * FROM ny-rides-lbamagalhaes.dezoomcamp.external_yellow_tripdata
+WHERE DATE(pickup_datetime) BETWEEN "2019-01-03" AND "2019-03-31";
 
 QUESTION 6
 
